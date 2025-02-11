@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Valentine Album</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #fce4ec;
+        }
+        .book-container {
+            width: 300px;
+            height: 400px;
+            perspective: 1500px;
+            position: relative;
+            transition: width 0.6s ease, height 0.6s ease;
+        }
+        #book {
+            width: 300px;
+            height: 400px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+        .page, .hard, .hardb {
+            width: 300px;
+            height: 400px;
+            background: white;
+            border: 1px solid #ccc;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            font-family: Arial, sans-serif;
+        }
+        .hard {
+            background: url('imagenes/Cover.jpg') no-repeat center center;
+            background-size: cover;
+            box-shadow: none;
+        }
+        .hardb {
+            background: url('imagenes/back.jpg') no-repeat center center;
+            background-size: cover;
+            box-shadow: none;
+        }
+        .page img {
+            width: 70%;
+            height: auto;
+            max-height: 300px;
+            border-radius: 10px;
+        }
+        .page p {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+        }
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        .prev-button {
+            left: -30px;
+        }
+        .next-button {
+            right: -130px;
+        }
+        
+        .response-button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 5px;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: transform 0.3s ease, font-size 0.3s ease;
+        }
+
+        .yes-button {
+            background-color: #ff4081;
+            color: white;
+        }
+
+        .no-button {
+            background-color: #b0bec5;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="book-container" id="book-container">
+        <button class="nav-button prev-button">◀</button>
+        <div id="book">
+            <div class="hard">
+                <h4 style="color: azure;">Nuestro Album de recuerdos Online
+                Bienvenida a mi invitacion!!!❤️❤️❤️</h4>
+            </div>
+            <div class="page">
+                <img src="imagenes/1.jpg" alt="Valentine Image 1">
+                <p>Yo siempre muy fotogenico jaja!</p>
+            </div>
+            <div class="page">
+                <img src="imagenes/2.jpg" alt="Valentine Image 2">
+                <p>Nosotros saliendo con lula.</p>
+            </div>
+            <div class="page">
+                <img src="imagenes/3.jpg" alt="Valentine Image 3">
+                <p>Cuando tu cirugia, fue algo muy complicado para mi(se que obvio mas para ti😾).</p>
+            </div>
+            <div class="page">
+                <img src="imagenes/4.jpg" alt="Valentine Image 4">
+                <p>Nuestras pintas maravillosas.</p>
+            </div>
+            <div class="page">
+                <img src="imagenes/5.jpg" alt="Valentine Image 5">
+                <p>Siempre quiero estar contigo espero seguir disfrutando cada momento.</p>
+            </div>
+            <div class="page">
+                <p>Finally the biggest question, I wanna know, Will you be my Valentine?</p>
+                <div style="margin-top: 20px;">
+                    <button class="response-button yes-button">Yes 💖</button>
+                    <button class="response-button no-button">No 💔</button>
+                </div>
+            </div>
+            <div class="hardb">
+                <h4 style="color: azure;">Nuestro Album de recuerdos Online
+                    Espero lo veas siempre que quieras tratare de actualizarlo muchoooo❤️❤️❤️</h4>
+            </div>
+        </div>
+        <button class="nav-button next-button">▶</button>
+    </div>
+
+    <script>
+        $(document).ready(function(){
+            if ($.fn.turn) {
+                $('#book').turn({
+                    width: 900,  // Siempre en doble
+                    height: 550,
+                    autoCenter: true,
+                    elevation: 50,
+                    display: 'double',  // Siempre en doble
+                    gradients: true,
+                    duration: 1000
+                });
+    
+                $('.prev-button').click(function() {
+                    $('#book').turn('previous');
+                });
+    
+                $('.next-button').click(function() {
+                    $('#book').turn('next');
+                });
+    
+                // Asegurar que el contenedor siempre tenga el tamaño correcto
+                $('#book-container').css({ width: '800px', height: '500px' });
+    
+            } else {
+                console.error("Turn.js no se cargó correctamente.");
+            }
+        });
+
+        let noClickCount = 0;  // Contador de clics en "No"
+
+        $(document).on('click', '.yes-button', function() {
+            alert("Yay! las instrucciones te llegaran mañana a la misma hora 💕");
+        });
+
+        $(document).on('click', '.no-button', function() {
+            noClickCount++;
+
+            if (noClickCount < 11) {
+                // Aumenta el tamaño del botón "yes" en cada clic
+                let newSize = 16 + (noClickCount * 5);  // Aumenta 5px en cada clic
+                $('.yes-button').css({ 'font-size': newSize + 'px', 'transform': 'scale(1.1)' });
+
+                setTimeout(() => {
+                    $('.no-button').css('transform', 'scale(1)');
+                }, 200);
+            }
+
+            if (noClickCount === 11) {
+                alert("Too bad! im gonna cry but i understand you 😿😿 "); // Simula un clic en el botón "Yes"
+            }
+        });
+
+    </script>
+    
+</body>
+</html>
